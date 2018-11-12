@@ -5,8 +5,12 @@ import android.os.Bundle;
 
 public class CrimeActivity extends AppCompatActivity {
 
+    /**
+     * 保护方法
+     * @param savedInstanceState
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime);
     }

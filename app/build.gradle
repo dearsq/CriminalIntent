@@ -19,14 +19,6 @@ android {
             debuggable false
         }
     }
-    productFlavors {
-        free {
-            applicationId "com.iyounix.android.criminalintent.free"
-        }
-        paid {
-            applicationId "com.iyounix.android.criminalintent.paid"
-        }
-    }
 }
 
 dependencies {

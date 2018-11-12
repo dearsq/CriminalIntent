@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class Crime {
     private UUID mId;
-    private String mTitle;
     private Date mDate;
+    private String mTitle;
     private boolean mSolved;
 
     public Crime(){
