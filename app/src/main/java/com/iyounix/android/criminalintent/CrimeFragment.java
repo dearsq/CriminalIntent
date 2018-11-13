@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 public class CrimeFragment extends Fragment{
@@ -17,6 +19,7 @@ public class CrimeFragment extends Fragment{
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
+    private CheckBox mSolvedCheckBox;
 
     /**
      * 公共方法, 为了让托管的 Activity 可以调用
@@ -40,7 +43,13 @@ public class CrimeFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // 传入布局资源ID , 视图的父视图, 告诉布局生成器 是否将生成的视图添加给父视图
+
+        /**
+         * inflate, 加载一个布局文件.  将一个 xml 定义的布局文件查找出来
+         * 传入布局资源ID , 将该布局文件加载到 Activity 中来操作
+         * 视图的父视图, 需要附加到 res 资源文件的根控件
+         * 告诉布局生成器 是否将生成的视图添加给父视图 , true就是立刻加载,false就是不加载 等待代码去加载
+         */
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
 
         // 生成并使用 EditText 组件
@@ -65,6 +74,14 @@ public class CrimeFragment extends Fragment{
         mDateButton = v.findViewById(R.id.crime_date);
         mDateButton.setText(mCrime.getDate().toString());
         mDateButton.setEnabled(false); //禁能 显示为灰色
+
+        mSolvedCheckBox = v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mCrime.setSolved(isChecked);
+            }
+        });
 
         return v;
     }
