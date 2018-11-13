@@ -16,8 +16,10 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
+        // 获取 Activity 的 FragmentManager // FragmentManager 管理着 fragment事务会退栈
         FragmentManager fm = getSupportFragmentManager();
 
+        // 将我们的 fragment 给 fm 管理
         Fragment fragment = fm.findFragmentById(R.id.fragment_container); //fragment 在 -> 销毁时 FM 会优先获取保存的队列, 然后重建
         if (fragment == null) { // fragment 不在, 启动新 fragment 事务
             fragment = new CrimeFragment();
