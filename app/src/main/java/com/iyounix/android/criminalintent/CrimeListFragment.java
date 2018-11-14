@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class CrimeListFragment extends Fragment {
     private static final String TAG = "YounixCrimeListFragment";
 
     private RecyclerView mCrimeRecyclerView;
+    private CrimeAdapter mAdapter;
 
     @Nullable
     @Override
@@ -28,7 +30,17 @@ public class CrimeListFragment extends Fragment {
 
         mCrimeRecyclerView = view.findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        updateUI();
         return view;
+    }
+
+    private void updateUI() {
+        CrimeLab crimeLab = CrimeLab.get(getActivity());
+        List<Crime> crimes = crimeLab.getCrimes();
+
+        mAdapter = new CrimeAdapter(crimes);
+        mCrimeRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -37,10 +49,26 @@ public class CrimeListFragment extends Fragment {
         Log.d(TAG, "onCreate: ");
     }
 
+    // CrimeHolder 中完成视图绑定工作
     private class CrimeHolder extends RecyclerView.ViewHolder {
+
+        private TextView mTitleTextView;
+        private TextView mDateTextView;
+
+        private Crime mCrime;
+
         // 构造函数中实例化 list_item_crime 布局, 传给 super
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_crime, parent, false));
+            mTitleTextView = itemView.findViewById(R.id.crime_title);
+            mDateTextView = itemView.findViewById(R.id.crime_date);
+        }
+
+        // 每次有新的 Crime 要在 CrimeHolder 中显示时,会调用 bind
+        public void bind(Crime crime) {
+            mCrime = crime;
+            mTitleTextView.setText(mCrime.getTitle());
+            mDateTextView.setText(mCrime.getDate().toString());
         }
     }
 
@@ -65,9 +93,15 @@ public class CrimeListFragment extends Fragment {
             return new CrimeHolder(layoutInflater, parent);
         }
 
+        /**
+         * 需要保证这个方法轻量高效
+         * @param holder
+         * @param position
+         */
         @Override
         public void onBindViewHolder(@NonNull CrimeHolder holder, int position) {
-
+            Crime crime = mCrimes.get(position);
+            holder.bind(crime);
         }
 
         @Override

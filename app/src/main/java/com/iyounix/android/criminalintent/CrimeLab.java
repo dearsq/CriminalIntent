@@ -38,4 +38,8 @@ public class CrimeLab {
             mCrimes.add(crime);
         }
     }
+
+    public List<Crime> getCrimes() {
+        return mCrimes;
+    }
 }
