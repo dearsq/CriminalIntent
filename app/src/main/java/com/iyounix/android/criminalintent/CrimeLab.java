@@ -18,6 +18,10 @@ public class CrimeLab {
         return sCrimeLab;
     }
 
+    public List<Crime> getCrimes() {
+        return mCrimes;
+    }
+
     public Crime getCrime(UUID id) {
         for(Crime crime: mCrimes) {
             if (crime.getId().equals(id)) {
@@ -37,9 +41,5 @@ public class CrimeLab {
             crime.setSolved(i % 2 == 0); //设置偶数没有被解决,奇数被解决
             mCrimes.add(crime);
         }
-    }
-
-    public List<Crime> getCrimes() {
-        return mCrimes;
     }
 }
