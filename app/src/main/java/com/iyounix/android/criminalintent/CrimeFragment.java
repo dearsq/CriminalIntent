@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 
 public class CrimeFragment extends Fragment{
 
+    private static final String TAG = "YounixCrimeFragment";
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
@@ -29,6 +31,7 @@ public class CrimeFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
         mCrime = new Crime();
     }
 
