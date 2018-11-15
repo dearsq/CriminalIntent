@@ -25,6 +25,8 @@ public class CrimeFragment extends Fragment{
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
 
+    private static final String ARG_CRIME_ID = "crime_id";
+
     /**
      * 公共方法, 为了让托管的 Activity 可以调用
      * 创建实例, 但是未生成视图
@@ -34,10 +36,14 @@ public class CrimeFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
-        // 获取 UUID (extra 数据)的实现代码
-        UUID crimeId = (UUID)getActivity().getIntent() /*getIntent 返回用来启动 CrimeActivity 的 Intent */
-                .getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID); /*获取 UUID 并存入变量中*/
+
+//        // 获取 UUID (extra 数据)的实现代码
+//        UUID crimeId = (UUID)getActivity().getIntent() /*getIntent 返回用来启动 CrimeActivity 的 Intent */
+//                .getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID); /*获取 UUID 并存入变量中*/
+        //从 fragment 的 argument 中获取 UUID
+        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+
     }
 
     /**
@@ -94,6 +100,21 @@ public class CrimeFragment extends Fragment{
         });
 
         return v;
+    }
+
+    /**
+     * 完成 fragment 实例以及 Bundle 对象的创建, 然后将 argument 放入 Bundle 中, 最后再附加给 fragment
+     * @param crimeId
+     * @return
+     */
+    public static CrimeFragment newInstance(UUID crimeId) {
+
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID,crimeId);
+
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 }
 

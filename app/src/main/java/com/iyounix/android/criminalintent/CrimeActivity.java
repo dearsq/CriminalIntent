@@ -12,14 +12,16 @@ import java.util.UUID;
 public class CrimeActivity extends SingleFragmentActivity {
     private static final String TAG = "YounixCrimeActivity";
 
-    public static final String EXTRA_CRIME_ID =
+    // ** 更好的做法是将 EXTRA_CRIME_ID 放在 fragment 的 argument bundle **
+    private static final String EXTRA_CRIME_ID =
             "com.iyounix.android.criminalintent.crime_id";
 
     //改为使用抽象类
     @Override
     protected Fragment createFragment() {
-        Log.d(TAG, "createFragment: ");
-        return new CrimeFragment();
+        UUID crimeId = (UUID) getIntent()
+                .getSerializableExtra(EXTRA_CRIME_ID);
+        return CrimeFragment.newInstance(crimeId);
     }
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
