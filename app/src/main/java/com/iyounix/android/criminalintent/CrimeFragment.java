@@ -15,6 +15,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 public class CrimeFragment extends Fragment{
 
     private static final String TAG = "YounixCrimeFragment";
@@ -32,7 +34,10 @@ public class CrimeFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
-        mCrime = new Crime();
+        // 获取 UUID (extra 数据)的实现代码
+        UUID crimeId = (UUID)getActivity().getIntent() /*getIntent 返回用来启动 CrimeActivity 的 Intent */
+                .getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID); /*获取 UUID 并存入变量中*/
+        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
 
     /**
@@ -57,6 +62,7 @@ public class CrimeFragment extends Fragment{
 
         // 生成并使用 EditText 组件
         mTitleField = v.findViewById(R.id.crime_title);
+        mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -79,6 +85,7 @@ public class CrimeFragment extends Fragment{
         mDateButton.setEnabled(false); //禁能 显示为灰色
 
         mSolvedCheckBox = v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setChecked(mCrime.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
