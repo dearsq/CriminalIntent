@@ -1,5 +1,6 @@
 package com.iyounix.android.criminalintent;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -116,5 +117,10 @@ public class CrimeFragment extends Fragment{
         fragment.setArguments(args);
         return fragment;
     }
+
+    public void returnResult() {
+        getActivity().setResult(Activity.RESULT_OK, null);
+    }
+
 }
 

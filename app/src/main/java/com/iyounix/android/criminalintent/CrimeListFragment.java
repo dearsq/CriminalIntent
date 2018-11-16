@@ -26,6 +26,9 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
 
+
+    private static final int REQUEST_CRIME = 1;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,12 +41,22 @@ public class CrimeListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -60,6 +73,7 @@ public class CrimeListFragment extends Fragment {
         private ImageView mSolvedImageView;
 
         private Crime mCrime;
+
 
         // 构造函数中实例化 list_item_crime 布局, 传给 super
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -84,7 +98,8 @@ public class CrimeListFragment extends Fragment {
         public void onClick(View v) {
             Toast.makeText(getActivity(),mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+//            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CRIME);
         }
     }
 
@@ -120,10 +135,18 @@ public class CrimeListFragment extends Fragment {
             holder.bind(crime);
         }
 
+
+
         @Override
         public int getItemCount() {
             return mCrimes.size();
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CRIME) {
+            // Handle result
+        }
+    }
 }
