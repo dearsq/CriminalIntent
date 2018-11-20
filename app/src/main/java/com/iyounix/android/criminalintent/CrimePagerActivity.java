@@ -71,14 +71,15 @@ public class CrimePagerActivity extends AppCompatActivity {
         for (int i = 0; i < mCrimes.size(); i++) {
             if(mCrimes.get(i).getId().equals(crimeId)){
                 mViewPager.setCurrentItem(i);
-                break;
+                 break;
             }
         }
     }
 
-    //FragmentPagerAdapter  FragmentStatePagerAdapter 两者用法一致, 卸载不用的fragment时,采用的处理方法不同
-    // FragmentStatePagerAdapter 更省内存
+    //FragmentPagerAdapter  FragmentStatePagerAdapter 两者用法一致, 区别在于卸载不用的fragment时,采用的处理方法不同
+    //FragmentStatePagerAdapter 优点是更省内存
 
+    //具体差别:
     //FragmentStatePagerAdapter //会销毁不需要的 fragment , commit 后, activity 的 fragmentmanager 中的 fragment 会被彻底删除
     // 其中 state 表明, 在销毁 fragment 时, 可以 onSaveInstanceState(Bundle)方法中保存fragment的Bundle信息
     //FragmentPagerAdapter  //会选择调用事务的 detach 而非 remove , 即 销毁了视图, 实例还在
