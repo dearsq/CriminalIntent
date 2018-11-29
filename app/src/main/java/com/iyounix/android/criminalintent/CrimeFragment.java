@@ -30,6 +30,8 @@ public class CrimeFragment extends Fragment{
     private static final String DIALOG_DATE = "DialogDate";
     private static final String ARG_CRIME_ID = "crime_id";
 
+    private static final int REQUEST_CODE = 0;
+
     /**
      * 公共方法, 为了让托管的 Activity 可以调用
      * 创建实例, 但是未生成视图
@@ -96,8 +98,11 @@ public class CrimeFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                DatePickerFragment dialog = new DatePickerFragment();
-                //Dialog show(
+                // Date 是时间戳
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                //将 DatePickerFragment 的 TargetFragment 设置为 CrimeFragment , 即关联起来
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_CODE);
+                //Dialog show
                 dialog.show(manager, DIALOG_DATE);
             }
         });
