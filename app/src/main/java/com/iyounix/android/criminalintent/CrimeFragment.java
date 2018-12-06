@@ -78,16 +78,19 @@ public class CrimeFragment extends Fragment{
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //This space intentionally left blank
+//                ToastUtil.show("beforeTextChanged" + s +" 开始" + start + " 个数" + count + " 之后" +after);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCrime.setTitle(s.toString());
+//                ToastUtil.show("onTextChanged" + s + " 开始" + start + " 之前" + before + " 个数" + count);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+//                ToastUtil.show("afterTextChanged" + s);
+                //不要在这里做操作, 因为输入结束后,一直处于输出完成的状态
             }
         });
 
