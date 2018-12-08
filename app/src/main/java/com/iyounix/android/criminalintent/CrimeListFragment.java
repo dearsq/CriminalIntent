@@ -26,12 +26,15 @@ public class CrimeListFragment extends Fragment {
     // Nothing to do
     private static final String TAG = "YounixCrimeListFragment";
 
+    private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
 
+    private boolean mSubtitleVisible;
+
 
     private static final int REQUEST_CRIME = 1;
-
 
 
     @Nullable
@@ -41,6 +44,11 @@ public class CrimeListFragment extends Fragment {
 
         mCrimeRecyclerView = view.findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        // 解决旋转时候副标题消失的问题
+        if (savedInstanceState != null) {
+            mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
+        }
 
         updateUI();
         return view;
@@ -52,11 +60,26 @@ public class CrimeListFragment extends Fragment {
         updateUI();
     }
 
+    //利用实例状态保存机制, 解决旋转时, 副标题消失的问题
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
+    }
+
     //创建右上角的菜单
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_crime_list, menu);
+
+        MenuItem subtitleItem = menu.findItem(R.id.show_subtitle);
+        if (mSubtitleVisible) {
+            subtitleItem.setTitle(R.string.hide_subtitle);
+        } else {
+            subtitleItem.setTitle(R.string.show_subtitle);
+        }
+        //updateUI();
     }
 
     @Override
@@ -69,6 +92,8 @@ public class CrimeListFragment extends Fragment {
                 startActivity(intent);
                 return true; //表明任务已经完成
             case R.id.show_subtitle:
+                mSubtitleVisible = !mSubtitleVisible;
+                getActivity().invalidateOptionsMenu();
                 updateSubtitle();
                 return true;
             default: //如果 ID 项不存在, 超类版本方法会被调用
@@ -79,7 +104,12 @@ public class CrimeListFragment extends Fragment {
     private void updateSubtitle() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         int crimeCount = crimeLab.getCrimes().size();
-        String subtitle = getString(R.string.subtitle_format, crimeCount);
+//        String subtitle = getString(R.string.subtitle_format, crimeCount);
+        String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, crimeCount,crimeCount);
+
+        if (!mSubtitleVisible) {
+            subtitle = null;
+        }
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
@@ -95,6 +125,8 @@ public class CrimeListFragment extends Fragment {
         } else {
             mAdapter.notifyDataSetChanged();
         }
+
+        updateSubtitle();
     }
 
     @Override
