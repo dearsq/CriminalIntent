@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import tech.gujin.toast.ToastUtil;
+
 public class CrimeListFragment extends Fragment {
     //TODO
     // Nothing to do
@@ -105,7 +107,8 @@ public class CrimeListFragment extends Fragment {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         int crimeCount = crimeLab.getCrimes().size();
 //        String subtitle = getString(R.string.subtitle_format, crimeCount);
-        String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, crimeCount,crimeCount);
+        ToastUtil.show("crimeCount = " + crimeCount);
+        String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, crimeCount, crimeCount);
 
         if (!mSubtitleVisible) {
             subtitle = null;
