@@ -18,7 +18,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment{
